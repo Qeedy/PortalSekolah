@@ -15,4 +15,8 @@ public class KelasController {
 	private List<ModelKelas> getAllKelas(){
 		return new ArrayList<>();
 	}; 
+	@GetMapping("/test")
+	private List<ModelKelas> getTest(){
+		return new ArrayList<>();
+	}; 
 }
