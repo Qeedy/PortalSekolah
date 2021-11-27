@@ -19,4 +19,8 @@ public class KelasController {
 	private List<ModelKelas> getTest(){
 		return new ArrayList<>();
 	}; 
+	@GetMapping("/testAgain")
+	private String testAgain() {
+		return "";
+	}
 }
