@@ -18,9 +18,5 @@ public class KelasController {
 	@GetMapping("/test")
 	private List<ModelKelas> getTest(){
 		return new ArrayList<>();
-	}; 
-	@GetMapping("/testAgain")
-	private String testAgain() {
-		return "";
-	}
+	};
 }
