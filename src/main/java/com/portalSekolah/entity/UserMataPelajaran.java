@@ -29,7 +29,7 @@ public class UserMataPelajaran {
 	@ManyToOne
 	@JoinColumn(name = "id_mata_pelajaran")
 	private MataPelajaran mataPelajaran;
-	@OneToOne(mappedBy = "uuid")
+	@ManyToOne
 	@JoinColumn(name = "id_siswa")
 	private Siswa siswa;
 	@Column

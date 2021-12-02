@@ -41,6 +41,8 @@ public class MataPelajaran {
 	private String namaGuru;
 	@OneToMany(mappedBy = "mataPelajaran")
 	private List<UserMataPelajaran> users;
+	@OneToMany(mappedBy = "mataPelajaran")
+	private List<Tugas> listTugas;
 	@Column
 	private Date jadwalMataPelajaran;
 }
