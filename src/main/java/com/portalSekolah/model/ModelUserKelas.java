@@ -8,7 +8,7 @@ import com.google.auto.value.AutoValue;
 
 @AutoValue
 @JsonDeserialize
-public abstract class ModelUserKelas {
+public abstract class ModelUserKelas implements AbstractModel{
 
 	@Nullable
 	public abstract String namaLengkap();

@@ -9,8 +9,8 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.google.auto.value.AutoValue;
 
 @AutoValue
-@JsonDeserialize(builder = ModelKelas.Builder.class)
-public abstract class ModelKelas {
+@JsonDeserialize(builder = AutoValue_ModelKelas.Builder.class)
+public abstract class ModelKelas implements AbstractModel{
 
 	@Nullable
 	public abstract String namaKelas();
@@ -28,6 +28,10 @@ public abstract class ModelKelas {
 
 		public abstract Builder namaKelas(String value);
 
+		public abstract Builder guru(ModelGuru value);
+		
+		public abstract Builder namaWaliKelas(String value);
+		
 		public abstract Builder users(List<ModelUserKelas> value);
 	}
 }

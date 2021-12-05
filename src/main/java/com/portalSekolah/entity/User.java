@@ -16,6 +16,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import com.portalSekolah.enums.UserRole;
+import com.portalSekolah.model.ModelUserRegistration;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,6 +55,9 @@ public class User implements UserDetails, Serializable {
 	private String noTelp;
 	@Enumerated(EnumType.STRING)
     private UserRole userRole;
+	private Boolean enabled = false;
+	
+	
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -71,22 +77,33 @@ public class User implements UserDetails, Serializable {
 	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	@Override
 	public boolean isCredentialsNonExpired() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return false;
+		return enabled;
+	}
+	public User(ModelUserRegistration model, String encryptedPassword) {
+		super();
+		this.username = model.username();
+		this.password = encryptedPassword;
+		this.namaDepan = model.firstName();
+		this.namaBelakang = model.lastName();
+		this.gender = model.gender();
+		this.emailAddress = model.emailAddress();
+		this.alamat = model.address();
+		this.noTelp = model.phoneNumber();
+		this.userRole = UserRole.valueOf(model.userType());
 	}
 
 }

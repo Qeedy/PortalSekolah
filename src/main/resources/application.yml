@@ -8,21 +8,11 @@ spring:
     url: jdbc:mysql://localhost:3306/PortalSekolah
     username: root
     password: jikolpu031198
-    
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-        format_sql: true
-    show-sql: true
-
   mail:
-    host: localhost
-    port: 1025
-    username: hello
-    password: hello
+    host: smtp.mailtrap.io
+    port: 2525
+    username: 8407312fab6eb7
+    password: 323501392134c9
 
     properties:
       mail:
@@ -35,4 +25,6 @@ spring:
           connectiontimeout: 5000
           timeout: 3000
           writetimeout: 5000
+          
+validationLink: http://localhost:8080/user/confirm?token=
 
