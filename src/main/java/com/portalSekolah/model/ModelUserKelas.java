@@ -18,6 +18,16 @@ public abstract class ModelUserKelas implements AbstractModel{
 
 	@Nullable
 	public abstract String noTelp();
+	
+	@Nullable
+	public abstract String idKelas();
+	
+	@Nullable
+	public abstract String idSiswa();
+	
+	public static Builder builder() {
+        return new AutoValue_ModelUserKelas.Builder();
+    }
 
 	@AutoValue.Builder
 	@JsonPOJOBuilder
@@ -29,5 +39,10 @@ public abstract class ModelUserKelas implements AbstractModel{
 		public abstract Builder statusUser(String value);
 
 		public abstract Builder noTelp(String value);
+		
+		public abstract Builder idKelas(String value);
+		
+		public abstract Builder idSiswa(String value);
+		
 	}
 }

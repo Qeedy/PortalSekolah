@@ -15,20 +15,24 @@ public abstract class ModelKelas implements AbstractModel{
 	@Nullable
 	public abstract String namaKelas();
 	@Nullable
-	public abstract ModelGuru guru();
+	public abstract String idGuru();
 	@Nullable
 	public abstract String namaWaliKelas();
 	@Nullable
 	public abstract List<ModelUserKelas> users();
+	
+	public static Builder builder() {
+        return new AutoValue_ModelKelas.Builder();
+    }
 
 	@AutoValue.Builder
-	@JsonPOJOBuilder
+	@JsonPOJOBuilder(withPrefix = "")
 	public static interface Builder {
 		public abstract ModelKelas build();
 
 		public abstract Builder namaKelas(String value);
 
-		public abstract Builder guru(ModelGuru value);
+		public abstract Builder idGuru(String value);
 		
 		public abstract Builder namaWaliKelas(String value);
 		

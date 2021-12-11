@@ -1,11 +1,9 @@
 package com.portalSekolah.service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -36,8 +34,10 @@ public class UserService implements UserDetailsService {
 	private EmailSender emailSender;
 	@Autowired
 	private Environment env;
-
-
+	@Autowired
+	private SiswaService siswaService;
+	@Autowired
+	private GuruService guruService;
 
 	private final static String USER_NOT_FOUND_MSG = "user with email %s not found";
 
@@ -68,6 +68,7 @@ public class UserService implements UserDetailsService {
 	public String confirmToken(String token) {
 		ConfirmationToken confirmToken = confirmationTokenRepository.findByToken(token)
 				.orElseThrow(() -> new IllegalStateException("token not found"));
+		User user = confirmToken.getUser();
 		if (confirmToken.getConfirmedAt() != null) {
             throw new IllegalStateException("email already confirmed");
         }
@@ -78,7 +79,15 @@ public class UserService implements UserDetailsService {
             throw new IllegalStateException("token expired");
         }
         confirmationTokenRepository.updateConfirmedAt(token, LocalDateTime.now());
-        userRepository.enableUser(confirmToken.getUser().getEmailAddress());
+        userRepository.enableUser(user.getEmailAddress());
+        switch (user.getUserRole()) {
+		case SISWA:
+			siswaService.createSiswa(user);
+			break;
+		default:
+			guruService.createGuru(user);
+			break;
+		}
 		return null;
 	}
 

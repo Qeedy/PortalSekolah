@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.google.auto.value.AutoValue;
 
 @AutoValue
-@JsonDeserialize(builder = ModelSiswa.Builder.class)
+@JsonDeserialize(builder = AutoValue_ModelSiswa.Builder.class)
 public abstract class ModelSiswa {
 
 	@Nullable
@@ -27,9 +27,13 @@ public abstract class ModelSiswa {
 
 	@Nullable
 	public abstract String noTelp();
+	
+	public static Builder builder() {
+        return new AutoValue_ModelSiswa.Builder();
+    }
 
 	@AutoValue.Builder
-	@JsonPOJOBuilder
+	@JsonPOJOBuilder(withPrefix = "")
 	public static interface Builder {
 		public abstract ModelSiswa build();
 

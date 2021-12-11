@@ -24,6 +24,8 @@ public class Guru {
 	@Column
 	private String gender;
 	@Column
+	private String alamat;
+	@Column
 	private String emailAddress;
 	@Column
 	private String noTelp;

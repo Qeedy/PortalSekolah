@@ -20,13 +20,20 @@ public abstract class ModelGuru {
 	public abstract String gender();
 
 	@Nullable
+	public abstract String alamat();
+
+	@Nullable
 	public abstract String emailAddress();
 
 	@Nullable
 	public abstract String noTelp();
+	
+	public static Builder builder() {
+        return new AutoValue_ModelGuru.Builder();
+    }
 
 	@AutoValue.Builder
-	@JsonPOJOBuilder
+	@JsonPOJOBuilder(withPrefix = "")
 	public static interface Builder {
 		public abstract ModelGuru build();
 
@@ -35,6 +42,8 @@ public abstract class ModelGuru {
 		public abstract Builder namaLengkap(String value);
 
 		public abstract Builder gender(String value);
+
+		public abstract Builder alamat(String value);
 
 		public abstract Builder emailAddress(String value);
 
