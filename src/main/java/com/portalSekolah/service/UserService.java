@@ -1,6 +1,8 @@
 package com.portalSekolah.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +10,15 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.portalSekolah.entity.ConfirmationToken;
+import com.portalSekolah.entity.RolePermission;
 import com.portalSekolah.entity.User;
 import com.portalSekolah.model.ModelUserRegistration;
 import com.portalSekolah.repository.ConfirmationTokenRepository;
+import com.portalSekolah.repository.RolePermissionRepository;
 import com.portalSekolah.repository.UserRepository;
 import com.portalSekolah.service.email.EmailSender;
 import com.portalSekolah.util.EmailValidator;
@@ -27,9 +31,11 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
+	private RolePermissionRepository authorizationRepository;
+	@Autowired
 	private ConfirmationTokenRepository confirmationTokenRepository;
 	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private EmailSender emailSender;
 	@Autowired
@@ -43,7 +49,7 @@ public class UserService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String emailAddress) throws UsernameNotFoundException {
-		return userRepository.findByEmailAddress(emailAddress)
+		return userRepository.findByUsername(emailAddress)
 				.orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, emailAddress)));
 	}
 
@@ -56,6 +62,14 @@ public class UserService implements UserDetailsService {
 		String token = UUID.randomUUID().toString();
 		LocalDateTime current = LocalDateTime.now();
 		User user = new User(modelUserRegistration, encryptedPassword);
+		List<RolePermission> roles = new ArrayList<>();
+		modelUserRegistration.roles().forEach(r -> {
+			RolePermission role = authorizationRepository.findByRoleCode(r);
+			if (null != role) {
+				roles.add(role);
+			}
+		});
+		user.setRoles(roles);
 		userRepository.save(user);
 		ConfirmationToken confirmToken = new ConfirmationToken(token, current, current.plusMinutes(15), user);
 		confirmationTokenRepository.save(confirmToken);
@@ -70,24 +84,25 @@ public class UserService implements UserDetailsService {
 				.orElseThrow(() -> new IllegalStateException("token not found"));
 		User user = confirmToken.getUser();
 		if (confirmToken.getConfirmedAt() != null) {
-            throw new IllegalStateException("email already confirmed");
-        }
-
-        LocalDateTime expiredAt = confirmToken.getExpiresAt();
-
-        if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("token expired");
-        }
-        confirmationTokenRepository.updateConfirmedAt(token, LocalDateTime.now());
-        userRepository.enableUser(user.getEmailAddress());
-        switch (user.getUserRole()) {
-		case SISWA:
-			siswaService.createSiswa(user);
-			break;
-		default:
-			guruService.createGuru(user);
-			break;
+			throw new IllegalStateException("email already confirmed");
 		}
+
+		LocalDateTime expiredAt = confirmToken.getExpiresAt();
+
+		if (expiredAt.isBefore(LocalDateTime.now())) {
+			throw new IllegalStateException("token expired");
+		}
+		confirmationTokenRepository.updateConfirmedAt(token, LocalDateTime.now());
+		userRepository.enableUser(user.getEmailAddress());
+		user.getRoles().forEach(r -> {
+			if ("SISWA".equals(r.getRoleCode())) {
+				siswaService.createSiswa(user);
+			}
+			if ("GURU".equals(r.getRoleCode())) {
+				guruService.createGuru(user);
+			}
+		});
+
 		return null;
 	}
 

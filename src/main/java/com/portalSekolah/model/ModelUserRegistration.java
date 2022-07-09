@@ -1,6 +1,7 @@
 package com.portalSekolah.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
@@ -23,6 +24,7 @@ public abstract class ModelUserRegistration implements AbstractModel {
 	public abstract String phoneNumber();
 	public abstract String address();
 	public abstract String gender();
+	public abstract List<String> roles();
 	
 	@AutoValue.Builder
     @JsonPOJOBuilder(withPrefix = "")
@@ -38,5 +40,6 @@ public abstract class ModelUserRegistration implements AbstractModel {
 		public abstract Builder phoneNumber(String value);
 		public abstract Builder address(String value);
 		public abstract Builder gender(String value);
+		public abstract Builder roles(List<String> value);
 	}
 }

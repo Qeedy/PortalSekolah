@@ -2,13 +2,18 @@ package com.portalSekolah.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -53,16 +58,17 @@ public class User implements UserDetails, Serializable {
 	private String alamat;
 	@Column
 	private String noTelp;
-	@Enumerated(EnumType.STRING)
-    private UserRole userRole;
+	
 	private Boolean enabled = false;
 	
-	
+	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@JoinTable(name = "AUTH_USER_AUTHORITY")
+	private List<RolePermission> roles;
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
-		return null;
+		return roles;
 	}
 	@Override
 	public String getPassword() {
@@ -103,7 +109,6 @@ public class User implements UserDetails, Serializable {
 		this.emailAddress = model.emailAddress();
 		this.alamat = model.address();
 		this.noTelp = model.phoneNumber();
-		this.userRole = UserRole.valueOf(model.userType());
 	}
 
 }

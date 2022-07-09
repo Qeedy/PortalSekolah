@@ -23,7 +23,7 @@ public class Siswa {
 	private String gender;
 	@Column
 	private String alamat;
-	@Column
+	@Column(nullable = true)
 	private String emailAddress;
 	@Column
 	private String noTelp;
