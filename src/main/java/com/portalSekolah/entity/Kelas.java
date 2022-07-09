@@ -37,5 +37,10 @@ public class Kelas {
 	private String namaWaliKelas;
 	@OneToMany(mappedBy = "kelas")
 	private List<UserKelas> users;
+	
+	public void addUserKelas(UserKelas userKelas) {
+		userKelas.setKelas(this);
+		this.users.add(userKelas);
+	}
 
 }

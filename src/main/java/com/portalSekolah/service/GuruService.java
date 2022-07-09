@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import com.portalSekolah.entity.Guru;
 import com.portalSekolah.entity.User;
@@ -13,6 +14,7 @@ import com.portalSekolah.mapper.GuruMapper;
 import com.portalSekolah.model.ModelGuru;
 import com.portalSekolah.repository.GuruRepository;
 
+@Service
 public class GuruService {
 	
 	@Autowired

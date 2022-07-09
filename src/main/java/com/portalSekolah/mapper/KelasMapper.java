@@ -14,16 +14,15 @@ import com.portalSekolah.repository.GuruRepository;
 
 @Component
 public class KelasMapper {
-	
 
 	@Autowired
 	private UserKelasMapper userKelasMapper;
 	@Autowired
 	private GuruRepository guruRepository;
-	
+
 	public static ModelKelas mapperEntityToModel(Kelas kelas) {
 		return ModelKelas.builder().namaKelas(kelas.getNamaKelas()).namaWaliKelas(kelas.getNamaWaliKelas())
-				.idGuru(kelas.getGuru().getUuid())	
+				.idGuru(kelas.getGuru().getUuid())
 				.users(kelas.getUsers().stream().map(UserKelasMapper::mapperEntityToModal).collect(Collectors.toList()))
 				.build();
 	}
@@ -31,8 +30,7 @@ public class KelasMapper {
 	public Kelas mapperModelToEntity(ModelKelas modelKelas) {
 		Kelas kelas = new Kelas();
 		if (modelKelas.users() != null) {
-			List<UserKelas> users = modelKelas.users().stream()
-					.map(userKelasMapper::mapperModalToEntity)
+			List<UserKelas> users = modelKelas.users().stream().map(userKelasMapper::mapperModalToEntity)
 					.collect(Collectors.toList());
 			kelas.setUsers(users);
 		}

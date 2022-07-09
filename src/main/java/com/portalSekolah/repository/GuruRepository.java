@@ -11,7 +11,7 @@ public interface GuruRepository extends CrudRepository<Guru, String>{
 
 	Page<Guru> findByNamaLengkapContains(String namaLengkap, Pageable pageable);
 	
-	@Query("SELECT g FROM Guru")
+	@Query("SELECT g FROM Guru g")
 	Page<Guru> findAllGuru(Pageable pageable);
 	
 }
