@@ -6,6 +6,8 @@ import java.util.List;
 import javax.annotation.security.RolesAllowed;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,8 +35,8 @@ public class KelasController {
 		return new ArrayList<>();
 	};
 	
+	@PreAuthorize("hasUserRole('GURU')")
 	@PostMapping(value = "/create-kelas", produces = { "application/json" }, consumes = { "application/json" })
-	@RolesAllowed("GURU")
 	public String createKelas(@RequestBody ModelKelas kelas) {
 		return kelasService.createKelas(kelas); 
 	}
@@ -45,6 +47,7 @@ public class KelasController {
 	}
 	
 	@PostMapping("/add-user-kelas/{uuid}")
+	@PreAuthorize("hasUserRole('GURU')")
 	public String addUserKelas(@PathVariable String uuid, 
 			@RequestBody ModelUserKelas modelUserKelas) {
 		kelasService.addUserKelas(uuid, modelUserKelas);

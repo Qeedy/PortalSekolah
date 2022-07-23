@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.portalSekolah.entity.RolePermission;
@@ -15,6 +16,7 @@ import com.portalSekolah.repository.RolePermissionRepository;
 
 @SpringBootApplication
 @EnableJpaRepositories
+@ComponentScan({ "com.portalSekolah" })
 public class PortalSekolahApplication {
 
 	@Autowired
@@ -26,11 +28,8 @@ public class PortalSekolahApplication {
 
 	@PostConstruct
 	protected void init() {
-		List<RolePermission> roles = Arrays.asList(
-				createRole("ADMIN", "Admin Role"), 
-				createRole("USER", "User Role"), 
-				createRole("SISWA", "Siswa Role"), 
-				createRole("GURU", "Guru Role"));
+		List<RolePermission> roles = Arrays.asList(createRole("ADMIN", "Admin Role"), createRole("USER", "User Role"),
+				createRole("SISWA", "Siswa Role"), createRole("GURU", "Guru Role"));
 		rolePermissionRepository.saveAll(roles);
 	}
 

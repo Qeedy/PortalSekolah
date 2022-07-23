@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.portalSekolah.entity.Kelas;
@@ -37,7 +38,9 @@ public class KelasService {
 		Kelas kelas = kelasRepository.findById(uuidKelas).orElseThrow(NullPointerException::new);
 		return KelasMapper.mapperEntityToModel(kelas);
 	}
-
+	
+	
+	@PreAuthorize("hasUserRole('GURU')")
 	public String createKelas(ModelKelas modelKelas) {
 		Kelas kelas = kelasMapper.mapperModelToEntity(modelKelas);
 		String uuid = UUID.randomUUID().toString();
