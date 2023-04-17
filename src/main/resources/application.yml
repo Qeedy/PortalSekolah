@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/PortalSekolah
     username: root
-    password: jikolpu031198
+    password: asyx436
   jpa:
     database: mysql
     hibernate:      ddl-auto: update

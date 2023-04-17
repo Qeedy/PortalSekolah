@@ -16,7 +16,7 @@ public abstract class ModelAuth {
 	public abstract String password();
 
 	public static Builder builder() {
-		return new AutoValue_ModelAuth.Builder();
+		return new AutoValue_ModelAuth.Builder(); 
 	}
 
 	@AutoValue.Builder

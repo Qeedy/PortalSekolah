@@ -6,12 +6,14 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 
 @Configuration
-@EnableGlobalMethodSecurity(jsr250Enabled = true, securedEnabled = true, prePostEnabled = true)
-public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration{
-	
-	@Override
-	protected MethodSecurityExpressionHandler createExpressionHandler() {
-		return new PortalMethodSecurityExpressionHandler();
-	}
+@EnableGlobalMethodSecurity(jsr250Enabled = true,
+        securedEnabled = true,
+        prePostEnabled = true)
+public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
+
+    @Override
+    protected MethodSecurityExpressionHandler createExpressionHandler() {
+        return new PortalMethodSecurityExpressionHandler();
+    }
 
 }

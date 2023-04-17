@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.portalSekolah.config.JWTTokenHelper;
 import com.portalSekolah.entity.User;
 import com.portalSekolah.model.AuthenticationRequest;
-import com.portalSekolah.model.ModelAuth;
 
 @RestController
 public class AuthController {

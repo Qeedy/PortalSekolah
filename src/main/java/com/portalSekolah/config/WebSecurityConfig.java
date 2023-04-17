@@ -23,41 +23,49 @@ import com.portalSekolah.service.UserService;
 @Profile("!https")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@Autowired
-	private JWTTokenHelper jWTTokenHelper;
+    @Autowired
+    private JWTTokenHelper jWTTokenHelper;
 
-	@Autowired
-	private AuthenticationEntryPoint authenticationEntryPoint;
+    @Autowired
+    private AuthenticationEntryPoint authenticationEntryPoint;
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
-	}
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth)
+            throws Exception {
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+    }
 
-	@Bean
-	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
-	}
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling()
-				.authenticationEntryPoint(authenticationEntryPoint).and()
-				.authorizeRequests(r -> r.antMatchers("/h2-console/**", "/login", "/user/confirm", "/user/register")
-						.permitAll().antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated())
-				.addFilterBefore(new JWTAuthenticationFilter(userService, jWTTokenHelper),
-						UsernamePasswordAuthenticationFilter.class);
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint).and()
+                .authorizeRequests(r -> r
+                        .antMatchers("/h2-console/**", "/login",
+                                "/user/confirm", "/user/register", "/user/change-password/**")
+                        .permitAll().antMatchers(HttpMethod.OPTIONS, "/**")
+                        .permitAll().anyRequest().authenticated())
+                .addFilterBefore(
+                        new JWTAuthenticationFilter(userService,
+                                jWTTokenHelper),
+                        UsernamePasswordAuthenticationFilter.class);
 
-		http.csrf().disable().cors().and().headers().frameOptions().disable();
-	}
-	
+        http.csrf().disable().cors().and().headers().frameOptions().disable();
+    }
+
 }
